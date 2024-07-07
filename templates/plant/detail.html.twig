@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détail de la Plante{% endblock %}
+
+{% block body %}
+    <h1>Détail de la Plante</h1>
+    <table>
+        <tr>
+            <th>Nom</th>
+            <td>{{ plant.getName }}</td>
+        </tr>
+        <tr>
+            <th>Nom Latin</th>
+            <td>{{ plant.getLatinName }}</td>
+        </tr>
+        <tr>
+            <th>Type</th>
+            <td>{{ plant.getType }}</td>
+        </tr>
+        <tr>
+            <th>Description</th>
+            <td>{{ plant.getDescription }}</td>
+        </tr>
+        <tr>
+            <th>Taille</th>
+            <td>{{ plant.getSize }}</td>
+        </tr>
+    </table>
+    <a href="{{ path('plant_list') }}">Retour à la liste</a>
+{% endblock %}

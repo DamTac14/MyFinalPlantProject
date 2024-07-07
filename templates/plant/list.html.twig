@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Plantes{% endblock %}
+
+{% block body %}
+    <h1>Liste des Plantes</h1>
+    <ul class="plant-list">
+        {% for plant in plants %}
+            <li>
+                <div class="plant-item">
+                    <a href="{{ path('plant_detail', { id: plant.id }) }}">{{ plant.name }}</a>
+                     
+                    <div class="actions">
+                       <a href="{{ path('plant_edit', { id: plant.id }) }}">[ Éditer ]</a>
+                        <form method="post" action="{{ path('plant_delete', { id: plant.id }) }}" style='margin-top:0;'>
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ plant.id) }}">
+                            <button class="btn btn-link" type="submit">[ Supprimer ]</button>
+                        </form>
+                    </div>
+                </div>
+            </li>
+        {% endfor %}
+    </ul>
+    <a href="{{ path('plant_add') }}">Ajouter une nouvelle plante</a>
+{% endblock %}
