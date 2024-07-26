@@ -1,30 +1,38 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Détail de la Plante{% endblock %}
+{% block title %}Détails de la Plante{% endblock %}
 
 {% block body %}
-    <h1>Détail de la Plante</h1>
+    <h1>Détails de la Plante</h1>
+<div class="plant-detail" style='background-image: url("{{ asset('uploads/images/' ~ (plant.getImage ? plant.getImage : 'default.jpg')) }}");'>
+<span>{{ plant.getName }}</span></div>
+
+
     <table>
         <tr>
-            <th>Nom</th>
-            <td>{{ plant.getName }}</td>
+            <th colspan='2'>Nom Latin</th>
+            <td colspan='2'>{{ plant.getLatinName }}</td>
         </tr>
         <tr>
-            <th>Nom Latin</th>
-            <td>{{ plant.getLatinName }}</td>
+            <th colspan='2'>Type</th>
+            <td colspan='2'>{{ plant.getType }}</td>
+        </tr>
+<tr>
+    <th colspan='2'>Date de floraison</th>
+    <td colspan='2'>{{ plant.getFloweringDate ? plant.getFloweringDate|date('d/m/Y') : 'Non spécifié' }}</td>
+</tr>
+
+        <tr>
+            <th colspan='2'>Description</th>
+            <td colspan='2'>{{ plant.getDescription }}</td>
         </tr>
         <tr>
-            <th>Type</th>
-            <td>{{ plant.getType }}</td>
-        </tr>
-        <tr>
-            <th>Description</th>
-            <td>{{ plant.getDescription }}</td>
-        </tr>
-        <tr>
-            <th>Taille</th>
-            <td>{{ plant.getSize }}</td>
+            <th  colspan='2'>Taille</th>
+            <td  colspan='2'>{{ plant.getSize }}</td>
         </tr>
     </table>
-    <a href="{{ path('plant_list') }}">Retour à la liste</a>
+    <table>
+        <th>Date d'ajout : {{ plant.getCreatedDate ? plant.getCreatedDate|date('d/m/Y') : 'Non spécifié' }} - Dernière M.A.J : {{ plant.getUpdatedDate ? plant.getUpdatedDate|date('d/m/Y') : 'Non spécifié' }}</th>
+    </table>
+
 {% endblock %}

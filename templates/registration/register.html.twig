@@ -1,0 +1,89 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Inscription{% endblock %}
+
+{% block body %}
+    {% for flash_error in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+
+    <h1>Inscription</h1>
+
+    {% if app.user %}
+
+    <h1>Vous êtes déjà connectés</h1>
+
+    {% else %}
+
+    <form method="post" id="registrationForm" data-turbo="false">
+        {{ form_start(registrationForm) }}
+
+        <div class="form-group">
+            {{ form_label(registrationForm.email) }}
+            {{ form_widget(registrationForm.email) }}
+            {% if registrationForm.email.vars.errors|length > 0 %}
+                <div class="form-error">
+                    {% for error in registrationForm.email.vars.errors %}
+                        <div class="alert alert-danger">{{ error.message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            {{ form_label(registrationForm.plainPassword.first) }}
+            <div class="input-container">
+                {{ form_widget(registrationForm.plainPassword.first) }}
+                <button type="button" id="togglePasswordRegister">
+                    <i class="fa fa-eye"></i>
+                </button>
+            </div>
+          
+        </div>
+
+        <div class="form-group">
+            {{ form_label(registrationForm.plainPassword.second) }}
+            <div class="input-container">
+                {{ form_widget(registrationForm.plainPassword.second) }}
+                <button type="button" id="togglePasswordConfirmationRegister">
+                    <i class="fa fa-eye"></i>
+                </button>
+            </div>
+
+              {% if registrationForm.plainPassword.first.vars.errors|length > 0 %}
+                <div class="form-error">
+                    {% for error in registrationForm.plainPassword.first.vars.errors %}
+                        <div class="alert alert-danger">{{ error.message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+            
+            {% if registrationForm.plainPassword.second.vars.errors|length > 0 %}
+                <div class="form-error">
+                    {% for error in registrationForm.plainPassword.second.vars.errors %}
+                        <div class="alert alert-danger">{{ error.message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+                <div class="form-group">
+            {{ form_widget(registrationForm.agreeTerms) }}
+            {{ form_label(registrationForm.agreeTerms) }}
+            {% if registrationForm.agreeTerms.vars.errors|length > 0 %}
+                <div class="form-error">
+                    {% for error in registrationForm.agreeTerms.vars.errors %}
+                        <div class="alert alert-danger">{{ error.message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+
+        {{ form_widget(registrationForm.submit) }}
+
+        {{ form_end(registrationForm) }}
+    </form>
+    {% endif %}
+    <script src="{{ asset('js/togglePassword.js') }}?v={{ 'now' | date('U') }}"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+{% endblock %}

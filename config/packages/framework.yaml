@@ -4,11 +4,15 @@ framework:
     #csrf_protection: true
 
     # Note that the session will be started ONLY if you read or write from it.
-    session: true
+    session:
+        handler_id: ~
+        cookie_secure: auto
+        cookie_samesite: lax
 
     #esi: true
     #fragments: true
-
+    http_method_override: true
+    
 when@test:
     framework:
         test: true

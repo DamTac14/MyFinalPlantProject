@@ -1,25 +1,57 @@
+{# templates/plant/list.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block title %}Liste des Plantes{% endblock %}
 
 {% block body %}
     <h1>Liste des Plantes</h1>
-    <ul class="plant-list">
-        {% for plant in plants %}
-            <li>
-                <div class="plant-item">
-                    <a href="{{ path('plant_detail', { id: plant.id }) }}">{{ plant.name }}</a>
-                     
+
+    <div class="plant-list-container">
+        <form id="searchForm" class="search-form">
+            <input type="text" id="searchName" placeholder="Rechercher par nom de la plante" />
+            <button type="button" id="clearButton">Effacer</button> 
+        </form>
+    </div>
+
+    <div class="plant-list-container">
+        <ul class="plant-list" id="plantList">
+            {% for plant in pagination %}
+                <li class="plant-item" data-name="{{ plant.name }}" data-latin-name="{{ plant.latinName }}" data-type="{{ plant.type }}" data-flowering-date="{{ plant.floweringDate ? plant.floweringDate|date('d/m/Y') : 'Non spécifié' }}">
+                    <a href="{{ path('plant_detail', {'slug': plant.slug, 'id': plant.id}) }}">{{ plant.name }}</a>
+                    {% if app.user %}
                     <div class="actions">
-                       <a href="{{ path('plant_edit', { id: plant.id }) }}">[ Éditer ]</a>
-                        <form method="post" action="{{ path('plant_delete', { id: plant.id }) }}" style='margin-top:0;'>
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ plant.id) }}">
-                            <button class="btn btn-link" type="submit">[ Supprimer ]</button>
-                        </form>
+                        <a class="edit-link" href="{{ path('plant_edit', { id: plant.id }) }}">Éditer</a>
+                    <form method="post" action="{{ path('plant_delete', { id: plant.id }) }}" style="margin-top:0;" id="delete-form-{{ plant.id }}" data-confirm="Êtes-vous sûr de vouloir supprimer cette plante ?">
+                        <button class="btn btn-link" type="submit">Supprimer</button>
+                    </form>
                     </div>
-                </div>
-            </li>
-        {% endfor %}
-    </ul>
-    <a href="{{ path('plant_add') }}">Ajouter une nouvelle plante</a>
+                    {% else %}
+                    <div class="actions">
+                        <a>Vous devez être connectés</a>
+                    </div>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="pagination">
+        {% if pagination.currentPageNumber > 1 %}
+            <a href="{{ path('plant_list', { page: pagination.currentPageNumber - 1 }) }}">Précédent</a>
+        {% else %}
+            <span>Précédent</span>
+        {% endif %}
+
+        <span>Page {{ pagination.currentPageNumber }} sur {{ pagination.pageCount }}</span>
+
+        {% if pagination.currentPageNumber < pagination.pageCount %}
+            <a href="{{ path('plant_list', { page: pagination.currentPageNumber + 1 }) }}">Suivant</a>
+        {% else %}
+            <span>Suivant</span>
+        {% endif %}
+    </div>
+
+
+    <script src="{{ asset('js/confirmation.js') }}"></script>
+    <script src="{{ asset('js/filter.js') }}"></script>
 {% endblock %}

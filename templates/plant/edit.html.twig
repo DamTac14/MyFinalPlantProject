@@ -1,12 +1,28 @@
+{# templates/plant/edit.html.twig #}
+
 {% extends 'base.html.twig' %}
 
 {% block title %}Éditer une Plante{% endblock %}
 
 {% block body %}
     <h1>Éditer une Plante</h1>
-    {{ form_start(form) }}
+
+        {% if app.user %}
+    <div class="formulaire">
+    {{ form_start(form, { 'attr': { 'enctype': 'multipart/form-data' } }) }}
         {{ form_widget(form) }}
+
+        {% if plant.image %}
+            <div class="current-image">
+                <h2>Image actuelle</h2>
+                <img src="{{ asset('uploads/images/' ~ plant.image) }}" alt="Image de la plante" style="max-width: 200px; height: auto;" />
+            </div>
+        {% endif %}
+
         <button class="btn">Enregistrer les modifications</button>
     {{ form_end(form) }}
-    <a href="{{ path('plant_list') }}">Retour à la liste</a>
+    </div>
+    {% else %}
+    <h2>Vous devez être connectés</h2>
+    {% endif %}
 {% endblock %}

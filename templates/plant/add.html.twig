@@ -1,12 +1,19 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Ajouter une Plante{% endblock %}
+{% block title %}Ajouter une plante{% endblock %}
 
 {% block body %}
-    <h1>Ajouter une Plante</h1>
-    {{ form_start(form) }}
+    <h1>Ajouter une nouvelle plante</h1>
+
+        {% if app.user %}
+
+    {{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
         {{ form_widget(form) }}
-        <button class="btn">Ajouter</button>
+                <button class="btn">Ajouter</button>
+
     {{ form_end(form) }}
-    <a href="{{ path('plant_list') }}">Retour à la liste</a>
+
+    {% else %}
+    <h2>Vous devez être connectés</h2>
+    {% endif %}
 {% endblock %}
